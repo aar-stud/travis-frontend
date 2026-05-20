@@ -1,0 +1,140 @@
+/* Dashboard.css - Main dashboard container and layout */
+:root {
+  --primary-color: #4a6fa5;
+  --primary-hover: #3a5a8a;
+  --secondary-color: #6c757d;
+  --light-bg: #f8f9fa;
+  --light-text: #212529;
+  --dark-bg: #1a1a1a;
+  --dark-text: #f8f9fa;
+  --dark-component-bg: #2c2c2c;
+  --border-radius: 38px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+  
+  /* Font sizes */
+  --font-size-small: 20px;
+  --font-size-medium: 40px;
+  --font-size-large: 60px;
+  
+  /* Response mode dynamic font sizes */
+  --font-size-query-small: 1.25rem;
+  --font-size-category-small: 1rem;
+  --font-size-response-small: 1.25rem;
+  
+  --font-size-query-medium: 2rem;
+  --font-size-category-medium: 1.4rem;
+  --font-size-response-medium: 2rem;
+  
+  --font-size-query-large: 3rem;
+  --font-size-category-large: 2.1rem;
+  --font-size-response-large: 3rem;
+}
+
+/* Main Dashboard Container */
+.dashboard {
+  height: 85vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  transition: var(--transition);
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  position: relative;
+}
+
+.dashboard-inner {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.5rem 1rem;
+  position: relative;
+  min-height: 70vh;
+}
+
+.dashboard.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 20px;
+  transition: var(--transition);
+}
+
+/* Response Mode Layout Adjustments */
+.dashboard.response-active .main-content {
+  margin-bottom: 170px; /* Increased space for query input */
+}
+
+/* Font size classes */
+.font-size-small {
+  --font-size-query: var(--font-size-query-small);
+  --font-size-category: var(--font-size-category-small);
+  --font-size-response: var(--font-size-response-small);
+  --popup-heading-size: 1.3rem;
+  --popup-text-size: 0.85rem;
+  --popup-button-size: 0.8rem;
+  --font-size-small: 0.9rem;
+}
+
+.font-size-medium {
+  --font-size-query: var(--font-size-query-medium);
+  --font-size-category: var(--font-size-category-medium);
+  --font-size-response: var(--font-size-response-medium);
+  --popup-heading-size: 1.5rem;
+  --popup-text-size: 0.95rem;
+  --popup-button-size: 0.9rem;
+  --font-size-medium: 1.1rem;
+}
+
+.font-size-large {
+  --font-size-query: var(--font-size-query-large);
+  --font-size-category: var(--font-size-category-large);
+  --font-size-response: var(--font-size-response-large);
+  --popup-heading-size: 1.7rem;
+  --popup-text-size: 1.1rem;
+  --popup-button-size: 1rem;
+  --font-size-large: 1.25rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  /* Response section */
+  .dashboard.response-active .main-content {
+    margin-bottom: 190px; /* Larger margin for mobile */
+  }
+  
+  /* Font size variables */
+  :root {
+    --font-size-query-small: 1rem;
+    --font-size-query-medium: 1.2rem;
+    --font-size-query-large: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Response section */
+  .dashboard.response-active .main-content {
+    margin-bottom: 220px; /* Even larger margin for small screens */
+  }
+  
+  /* Font size variables */
+  :root {
+    --font-size-query-small: 0.95rem;
+    --font-size-query-medium: 1.1rem;
+    --font-size-query-large: 1.3rem;
+  }
+}
