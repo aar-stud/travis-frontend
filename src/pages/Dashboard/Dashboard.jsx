@@ -169,19 +169,21 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
         queryMode === "knowledge" ? "knowledge" :
         "neural";
 
-      const [queryRes, catRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/api/query/`, {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ query: currentQuery, mode: backendMode }),
-        }).then((r) => r.json().then((d) => ({ ok: r.ok, data: d }))),
+      const parseResponse = async (r) => {
+        const text = await r.text();
+        try {
+          return { ok: r.ok, data: JSON.parse(text) };
+        } catch (e) {
+          console.error("[Dashboard] Response text:", text);
+          return { ok: r.ok, data: { error: `HTTP ${r.status}: ${text.substring(0, 100)}` } };
+        }
+      };
 
-        fetch(`${API_BASE_URL}/api/classify`, {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ query: currentQuery }),
-        }).then((r) => r.json().then((d) => ({ ok: r.ok, data: d }))),
-      ]);
+      const queryRes = await fetch(`${API_BASE_URL}/api/query`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", "auth-token": authToken },
+        body:    JSON.stringify({ query: currentQuery, mode: backendMode }),
+      }).then(parseResponse);
 
       if (queryRes.ok) {
         setResponse(queryRes.data.response || "No response received");
@@ -192,9 +194,22 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
         return;
       }
 
-      setResponseCategory(
-        catRes.ok ? (catRes.data.category || "General") : "General"
-      );
+      // Try to classify, but don't fail if endpoint doesn't exist
+      let category = "General";
+      try {
+        const catRes = await fetch(`${API_BASE_URL}/api/classify`, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json", "auth-token": authToken },
+          body:    JSON.stringify({ query: currentQuery }),
+        }).then(parseResponse);
+        if (catRes.ok && catRes.data.category) {
+          category = catRes.data.category;
+        }
+      } catch (err) {
+        console.warn("[Dashboard] Classification unavailable:", err);
+      }
+      
+      setResponseCategory(category);
 
       if (autoReadEnabled) speak(queryRes.data.response);
       fetchQueryHistory();
