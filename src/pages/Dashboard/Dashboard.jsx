@@ -8,6 +8,7 @@ import PopupSystem from "../../components/dashboard_components/PopupSystem";
 import Footer from "../../components/dashboard_components/Footer";
 import { containsSensitiveInfo } from "../../utils/securityUtils";
 import API_URL from "../../utils/apiConfig";
+import { apiFetch } from "../../utils/api";
 
 const API_BASE_URL = API_URL;
 
@@ -78,7 +79,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
   const fetchQueryHistory = () => {
     const token = sessionStorage.getItem("auth-token");
     if (!token) return;
-    fetch(`${API_BASE_URL}/api/query/history?limit=3&sort=-createdAt`, {
+    apiFetch(`${API_BASE_URL}/api/query/history?limit=3&sort=-createdAt`, {
       headers: { "auth-token": token },
     })
       .then((r) => r.json())
@@ -143,7 +144,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
         const accountNumber = await promptForAccountNumber();
         if (!accountNumber) return;
 
-        const res  = await fetch(`${API_BASE_URL}/api/customers/secureQuery`, {
+        const res  = await apiFetch(`${API_BASE_URL}/api/customers/secureQuery`, {
           method:  "POST",
           headers: { "Content-Type": "application/json", "auth-token": authToken },
           body:    JSON.stringify({ query: currentQuery, accountNumber }),
@@ -179,7 +180,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
         }
       };
 
-      const queryRes = await fetch(`${API_BASE_URL}/api/query`, {
+      const queryRes = await apiFetch(`${API_BASE_URL}/api/query`, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "auth-token": authToken },
         body:    JSON.stringify({ query: currentQuery, mode: backendMode }),
@@ -197,7 +198,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
       // Try to classify, but don't fail if endpoint doesn't exist
       let category = "General";
       try {
-        const catRes = await fetch(`${API_BASE_URL}/api/classify`, {
+        const catRes = await apiFetch(`${API_BASE_URL}/api/classify`, {
           method:  "POST",
           headers: { "Content-Type": "application/json", "auth-token": authToken },
           body:    JSON.stringify({ query: currentQuery }),
@@ -231,7 +232,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
     if (!authToken) { setIsTranslating(false); return; }
 
     try {
-      const res  = await fetch(`${API_BASE_URL}/api/query/translate`, {
+      const res  = await apiFetch(`${API_BASE_URL}/api/query/translate`, {
         method:  "POST",
         headers: { "Content-Type": "application/json", "auth-token": authToken },
         body:    JSON.stringify({ response }),

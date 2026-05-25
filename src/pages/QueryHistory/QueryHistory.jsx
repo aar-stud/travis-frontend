@@ -9,28 +9,31 @@ const QueryHistory = ({ darkMode = false }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const authToken = sessionStorage.getItem("auth-token");
-
-        if (!authToken) {
-            setError("You must be logged in to view query history.");
-            setLoading(false);
-            return;
+    const authToken = sessionStorage.getItem("auth-token");
+ 
+    if (!authToken) {
+        setError("You must be logged in to view query history.");
+        setLoading(false);
+        return;
+    }
+ 
+    fetch(`${API_URL}/api/query/history`, {
+        headers: { 
+            "auth-token": authToken,
+            "ngrok-skip-browser-warning": "true",
         }
-
-        fetch(`${API_URL}/api/query/history`, {
-            headers: { "auth-token": authToken }
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            setHistory(data);
+            setLoading(false);
         })
-            .then((res) => res.json())
-            .then((data) => {
-                setHistory(data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching history:", err);
-                setError("Failed to load query history.");
-                setLoading(false);
-            });
-    }, []);
+        .catch((err) => {
+            console.error("Error fetching history:", err);
+            setError("Failed to load query history.");
+            setLoading(false);
+        });
+}, []);
 
     const renderContent = () => {
         if (loading) {

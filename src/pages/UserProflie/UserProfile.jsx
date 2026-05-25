@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import API_URL from '../../utils/apiConfig';
 import './UserProfile.css';
+import { apiFetch } from '../../utils/api';
 
 const UserProfile = (props) => {
     const [user, setUser] = useState(null);
@@ -27,7 +28,7 @@ const UserProfile = (props) => {
         const fetchUserProfile = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`${API_URL}/api/auth/getuser`, {
+                const response = await apiFetch(`${API_URL}/api/auth/getuser`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

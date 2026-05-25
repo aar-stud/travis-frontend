@@ -5,6 +5,7 @@ import { Card } from "react-bootstrap"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import API_URL from "../../utils/apiConfig"
 import "./Login.css"
+import { apiFetch } from "../../utils/api"
 
 const Login = (props) => {
   const location = useLocation()
@@ -36,7 +37,7 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    const response = await apiFetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

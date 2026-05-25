@@ -5,6 +5,7 @@ import { Card } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import API_URL from "../../utils/apiConfig"
 import "./Signup.css"
+import { apiFetch } from "../../utils/api"
 
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
@@ -50,7 +51,7 @@ const Signup = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { name, email, password } = credentials
-    const response = await fetch(`${API_URL}/api/auth/signup`, {
+    const response = await apiFetch(`${API_URL}/api/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
