@@ -198,7 +198,7 @@ const Dashboard = ({ darkMode, setDarkMode, fontSize, setFontSize, showAlert }) 
       // Try to classify, but don't fail if endpoint doesn't exist
       let category = "General";
       try {
-        const catRes = await apiFetch(`${API_BASE_URL}/api/classify`, {
+        const catRes = await apiFetch(`${API_BASE_URL}/api/query/category`, {
           method:  "POST",
           headers: { "Content-Type": "application/json", "auth-token": authToken },
           body:    JSON.stringify({ query: currentQuery }),

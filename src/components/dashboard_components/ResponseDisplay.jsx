@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import ReactMarkdown from 'react-markdown';
 import './ResponseDisplay.css';
 import { FaTimes, FaVolumeUp, FaLanguage } from "react-icons/fa";
 import API_URL from "../../utils/apiConfig";
@@ -30,10 +31,7 @@ const ResponseDisplay = ({
       </div>
       <div className="response-content" ref={responseContentRef}>
         <div><strong>Response:</strong>
-          {/* {response} */}
-          {response.split('\n').map((line, index) => (
-            <p key={index}>{line}</p>
-          ))}
+          <ReactMarkdown>{response}</ReactMarkdown>
         </div>
 
         {/* {translatedResponse && (
@@ -44,9 +42,7 @@ const ResponseDisplay = ({
         {translatedResponse && (
           <div className="translated-response">
             <h4>Translated Response:</h4>
-            {translatedResponse.split('\n').map((line, index) => (
-              <p key={index}>{line}</p>
-            ))}
+            <ReactMarkdown>{translatedResponse}</ReactMarkdown>
           </div>
         )}
 

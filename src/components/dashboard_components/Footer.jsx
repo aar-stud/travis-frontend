@@ -4,7 +4,7 @@ import './Footer.css';
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>© 2025 TRAVIS AI Assistant | v2.0.3</p>
+      <p>© 2026 TRAVIS AI Assistant | v2.0.5</p>
     </footer>
   );
 };
